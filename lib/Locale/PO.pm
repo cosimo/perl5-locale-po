@@ -1,7 +1,7 @@
 package Locale::PO;
 use strict;
 use warnings;
-our $VERSION = '0.21';
+our $VERSION = '0.22';
 
 use Carp;
 
@@ -12,6 +12,9 @@ sub new {
     my $self    = {};
     bless $self, $class;
 	$self->_flags([]);
+    $self->fuzzy_msgid( $options{'-fuzzy_msgid'} ) if defined( $options{'-fuzzy_msgid'} );
+    $self->fuzzy_msgid_plural( $options{'-fuzzy_msgid_plural'} )
+      if defined( $options{'-fuzzy_msgid_plural'} );
     $self->msgid( $options{'-msgid'} ) if defined( $options{'-msgid'} );
     $self->msgid_plural( $options{'-msgid_plural'} )
       if defined( $options{'-msgid_plural'} );
@@ -19,6 +22,7 @@ sub new {
     $self->msgstr_n( $options{'-msgstr_n'} )
       if defined( $options{'-msgstr_n'} );
 	$self->msgctxt( $options{'-msgctxt'} ) if defined( $options{'-msgctxt'} );
+	$self->fuzzy_msgctxt( $options{'-fuzzy_msgctxt'} ) if defined( $options{'-fuzzy_msgctxt'} );
     $self->comment( $options{'-comment'} ) if defined( $options{'-comment'} );
     $self->fuzzy( $options{'-fuzzy'} )     if defined( $options{'-fuzzy'} );
     $self->automatic( $options{'-automatic'} )
@@ -31,6 +35,24 @@ sub new {
     $self->c_format(0) if defined( $options{'-no_c_format'} );
 	$self->loaded_line_number( $options{'-loaded_line_number'} ) if defined( $options{'-loaded_line_number'} );
     return $self;
+}
+
+sub fuzzy_msgctxt {
+	my $self = shift;
+	@_ ? $self->{'fuzzy_msgctxt'} = $self->quote(shift) : $self->{'fuzzy_msgctxt'};
+}
+
+sub fuzzy_msgid {
+    my $self = shift;
+    @_ ? $self->{'fuzzy_msgid'} = $self->quote(shift) : $self->{'fuzzy_msgid'};
+}
+
+sub fuzzy_msgid_plural {
+    my $self = shift;
+    @_
+      ? $self->{'fuzzy_msgid_plural'} =
+        $self->quote(shift)
+      : $self->{'fuzzy_msgid_plural'};
 }
 
 sub msgctxt {
@@ -207,9 +229,23 @@ sub _normalize_str {
     }
 }
 
+sub _fuzzy_normalize_str {
+    my $self = shift;
+    my $string = shift;
+    my $prefix = shift;
+
+    my $normalized = $self->_normalize_str($string);
+
+    # on newlines, start them with "#| " or "#~| "
+    $normalized =~ s/\n"/\n$prefix"/g;
+
+    return $normalized;
+}
+
 sub dump {
     my $self = shift;
 	my $obsolete = $self->obsolete? '#~ ' : '';
+    my $fuzzy_prefix = $self->obsolete? '#~| ' : '#| ';
     my $dump;
     $dump = $self->_dump_multi_comment( $self->comment, "# " )
       if ( $self->comment );
@@ -224,6 +260,16 @@ sub dump {
         $flags .= ", $flag"
     }
     $dump .= "#$flags\n" if length $flags;
+
+    $dump .= "${fuzzy_prefix}msgctxt "
+          . $self->_fuzzy_normalize_str( $self->fuzzy_msgctxt, $fuzzy_prefix )
+		if $self->fuzzy_msgctxt;
+    $dump .= "${fuzzy_prefix}msgid "
+          . $self->_fuzzy_normalize_str( $self->fuzzy_msgid, $fuzzy_prefix )
+		if $self->fuzzy_msgid;
+    $dump .= "${fuzzy_prefix}msgid_plural "
+          . $self->_fuzzy_normalize_str( $self->fuzzy_msgid_plural, $fuzzy_prefix )
+		if $self->fuzzy_msgid_plural;
 
     $dump .= "${obsolete}msgctxt " . $self->_normalize_str( $self->msgctxt )
 		if $self->msgctxt;
@@ -331,6 +377,9 @@ sub _load_file {
 
             if ( defined($po) ) {
             
+            	$po->fuzzy_msgctxt( $buffer{fuzzy_msgctxt} ) if defined $buffer{fuzzy_msgctxt};
+                $po->fuzzy_msgid( $buffer{fuzzy_msgid} ) if defined $buffer{fuzzy_msgid};
+                $po->fuzzy_msgid_plural( $buffer{fuzzy_msgid_plural} ) if defined $buffer{fuzzy_msgid_plural};
             	$po->msgctxt( $buffer{msgctxt} ) if defined $buffer{msgctxt};
                 $po->msgid( $buffer{msgid} ) if defined $buffer{msgid};
                 $po->msgid_plural( $buffer{msgid_plural} ) if defined $buffer{msgid_plural};
@@ -396,6 +445,24 @@ sub _load_file {
                 $po->add_flag($flag);
             }
         }
+        elsif (/^#(~)?\|\s+msgctxt\s+(.*)/) {
+            $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
+            $buffer{fuzzy_msgctxt} = $self->dequote($2);
+            $last_buffer = \$buffer{fuzzy_msgctxt};
+            $po->obsolete(1) if $1;
+        }
+        elsif (/^#(~)?\|\s+msgid\s+(.*)/) {
+            $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
+            $buffer{fuzzy_msgid} = $self->dequote($2);
+            $last_buffer = \$buffer{fuzzy_msgid};
+            $po->obsolete(1) if $1;
+        }
+        elsif (/^#(~)?\|\s+msgid_plural\s+(.*)/) {
+            $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
+            $buffer{fuzzy_msgid_plural} = $self->dequote($2);
+            $last_buffer = \$buffer{fuzzy_msgid_plural};
+            $po->obsolete(1) if $1;
+        }
         elsif (/^(#~\s+)?msgctxt\s+(.*)/) {
             $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
             $buffer{msgctxt} = $self->dequote($2);
@@ -426,10 +493,14 @@ sub _load_file {
             $buffer{msgstr_n}{$1} = $self->dequote($2);
             $last_buffer = \$buffer{msgstr_n}{$1};
         }
-        elsif (/^(?:#~\s+)?"/) {
+        elsif (/^(?:#(?:~|~\||\|)\s+)?(".*)/) {
 
-            # contined string
-            $$last_buffer .= $self->dequote($_);
+            # continued string. Accounts for:
+            #   normal          : "string"
+            #   obsolete        : #~ "string"
+            #   fuzzy           : #| "string"
+            #   fuzzy+obsolete  : #~| "string"
+            $$last_buffer .= $self->dequote($1);
         }
         else {
             warn "Strange line at $file line $line_number: $_\n";
@@ -529,7 +600,8 @@ a list/hash of the form:
 
 	-option=>value, -option=>value, etc.
 
-Where options are msgid, msgstr, msgctxt, comment, automatic, reference,
+Where options are msgid, msgid_plural, msgstr, msgctxt, comment, automatic,
+reference, fuzzy_msgctxt, fuzzy_msgid, fuzzy_msgid_plural,
 fuzzy, and c-format. See accessor methods below.
 
 To generate a po file header, add an entry with an empty
@@ -580,6 +652,24 @@ This method expects the new strings in unquoted form but returns the current str
 =item msgctxt
 
 Set or get the translation context string from the object.
+
+This method expects the new string in unquoted form but returns the current string in quoted form.
+
+=item fuzzy_msgid
+
+Set or get the outdated untranslated string from the object.
+
+This method expects the new string in unquoted form but returns the current string in quoted form.
+
+=item fuzzy_msgid_plural
+
+Set or get the outdated untranslated plural string from the object.
+
+This method expects the new string in unquoted form but returns the current string in quoted form.
+
+=item fuzzy_msgctxt
+
+Set or get the outdated translation context string from the object.
 
 This method expects the new string in unquoted form but returns the current string in quoted form.
 
