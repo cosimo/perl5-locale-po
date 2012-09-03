@@ -8,5 +8,6 @@ WriteMakefile(
         'File::Slurp' => 0,
         'Test::More'  => 0,
     },
-    VERSION_FROM => 'PO.pm',    # finds $VERSION
+    ABSTRACT_FROM => 'lib/Locale/PO.pm',
+    VERSION_FROM => 'lib/Locale/PO.pm',
 );
