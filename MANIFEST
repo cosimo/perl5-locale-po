@@ -2,8 +2,12 @@ Changes
 MANIFEST
 META.yml                                 Module meta-data (added by MakeMaker)
 Makefile.PL
-PO.pm
+lib/Locale/PO.pm
 README
+t/fuzzy.pot
+t/fuzzy.t
+t/RT40009.t
+t/RT40009.po
 t/plurals.pot
 t/plurals.t
 t/singular.t

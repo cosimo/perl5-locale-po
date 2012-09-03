@@ -1,13 +1,23 @@
 Revision history for Perl extension Locale::PO.
 
+0.22  Sep 03 2012
+   -  New maintainer: Cosimo Streppone (COSIMO)
+   -  Bug RT#40009 Incorrect handling of multi-line obsolete entries
+      (patch by Joshua Miller, test case by Cosimo Streppone)
+   -  Bug RT#66264 Added support for fuzzy string prefix "#|" and "#~|".
+      (patch by Joshua Miller)
+
 0.21  May 19 2008
    -  BUG #35939 - Locale::PO is now correctly subclassable
       (patch provided by Cosimo Streppone)
+
 0.20  Mar 15 2008
    -  BUG #34110 - fixed a rather serious problem with the dist not building on 
       anything but a Mac
+
 0.19  Mar 14 2008
     - FEATURE: Added msgctxt support (thanks to Kevin Scannell for the patch)
+
 0.18  Mar 14 2008
     - New maintainer: Ken Prows
     - BUG #33969: Fixed a problem with multi-line msgid_plural entries
