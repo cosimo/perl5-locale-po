@@ -1,0 +1,12 @@
+Changes
+MANIFEST
+META.yml                                 Module meta-data (added by MakeMaker)
+Makefile.PL
+PO.pm
+README
+t/plurals.pot
+t/plurals.t
+t/singular.t
+t/subclass.t
+t/test.pot
+t/test1.pot
