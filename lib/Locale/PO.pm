@@ -365,12 +365,12 @@ sub _save_file {
 
 sub load_file_asarray {
     my $self = shift;
-    $self->_load_file( 0, $_[0] );
+    $self->_load_file( 0, @_ );
 }
 
 sub load_file_ashash {
     my $self = shift;
-    $self->_load_file( 1, $_[0] );
+    $self->_load_file( 1, @_ );
 }
 
 sub _load_file {
