@@ -375,9 +375,7 @@ sub load_file_ashash {
 
 sub _load_file {
     my $self   = shift;
-    my $file   = shift;
     my $ashash = shift;
-    my $class  = ref $self || $self;
     my $file   = shift;
     my $encoding = shift;
     my $class  = ref $self || $self;
