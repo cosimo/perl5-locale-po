@@ -14,3 +14,5 @@ t/singular.t
 t/subclass.t
 t/test.pot
 t/test1.pot
+t/utf-8.po
+t/utf-8.t
