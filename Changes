@@ -1,6 +1,6 @@
 Revision history for Perl extension Locale::PO.
 
-NEW_RELEASE
+0.23  Feb 06 2013
    -  Bugs RT#76366 and RT#54064 - Added encoding option. Now we can load & save
       PO files in any encoding, For example in 'utf8'. Added test about this.
       (patch by Perlover which based on patch from Zach)
