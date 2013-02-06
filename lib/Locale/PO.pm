@@ -11,35 +11,37 @@ sub new {
     my $class   = ref($this) || $this;
     my $self    = {};
     bless $self, $class;
-	$self->_flags([]);
-    $self->fuzzy_msgid( $options{'-fuzzy_msgid'} ) if defined( $options{'-fuzzy_msgid'} );
-    $self->fuzzy_msgid_plural( $options{'-fuzzy_msgid_plural'} )
-      if defined( $options{'-fuzzy_msgid_plural'} );
-    $self->msgid( $options{'-msgid'} ) if defined( $options{'-msgid'} );
-    $self->msgid_plural( $options{'-msgid_plural'} )
-      if defined( $options{'-msgid_plural'} );
-    $self->msgstr( $options{'-msgstr'} ) if defined( $options{'-msgstr'} );
-    $self->msgstr_n( $options{'-msgstr_n'} )
-      if defined( $options{'-msgstr_n'} );
-	$self->msgctxt( $options{'-msgctxt'} ) if defined( $options{'-msgctxt'} );
-	$self->fuzzy_msgctxt( $options{'-fuzzy_msgctxt'} ) if defined( $options{'-fuzzy_msgctxt'} );
-    $self->comment( $options{'-comment'} ) if defined( $options{'-comment'} );
-    $self->fuzzy( $options{'-fuzzy'} )     if defined( $options{'-fuzzy'} );
-    $self->automatic( $options{'-automatic'} )
-      if defined( $options{'-automatic'} );
-    $self->reference( $options{'-reference'} )
-      if defined( $options{'-reference'} );
-    $self->c_format(1) if defined( $options{'-c-format'} );
-    $self->c_format(1) if defined( $options{'-c_format'} );
-    $self->c_format(0) if defined( $options{'-no-c-format'} );
-    $self->c_format(0) if defined( $options{'-no_c_format'} );
-	$self->loaded_line_number( $options{'-loaded_line_number'} ) if defined( $options{'-loaded_line_number'} );
+    $self->_flags([]);
+    $self->fuzzy_msgid($options{'-fuzzy_msgid'}) if defined($options{'-fuzzy_msgid'});
+    $self->fuzzy_msgid_plural($options{'-fuzzy_msgid_plural'})
+        if defined($options{'-fuzzy_msgid_plural'});
+    $self->msgid($options{'-msgid'}) if defined($options{'-msgid'});
+    $self->msgid_plural($options{'-msgid_plural'})
+        if defined($options{'-msgid_plural'});
+    $self->msgstr($options{'-msgstr'}) if defined($options{'-msgstr'});
+    $self->msgstr_n($options{'-msgstr_n'})
+        if defined($options{'-msgstr_n'});
+    $self->msgctxt($options{'-msgctxt'}) if defined($options{'-msgctxt'});
+    $self->fuzzy_msgctxt($options{'-fuzzy_msgctxt'})
+        if defined($options{'-fuzzy_msgctxt'});
+    $self->comment($options{'-comment'}) if defined($options{'-comment'});
+    $self->fuzzy($options{'-fuzzy'})     if defined($options{'-fuzzy'});
+    $self->automatic($options{'-automatic'})
+        if defined($options{'-automatic'});
+    $self->reference($options{'-reference'})
+        if defined($options{'-reference'});
+    $self->c_format(1) if defined($options{'-c-format'});
+    $self->c_format(1) if defined($options{'-c_format'});
+    $self->c_format(0) if defined($options{'-no-c-format'});
+    $self->c_format(0) if defined($options{'-no_c_format'});
+    $self->loaded_line_number($options{'-loaded_line_number'})
+        if defined($options{'-loaded_line_number'});
     return $self;
 }
 
 sub fuzzy_msgctxt {
-	my $self = shift;
-	@_ ? $self->{'fuzzy_msgctxt'} = $self->quote(shift) : $self->{'fuzzy_msgctxt'};
+    my $self = shift;
+    @_ ? $self->{'fuzzy_msgctxt'} = $self->quote(shift) : $self->{'fuzzy_msgctxt'};
 }
 
 sub fuzzy_msgid {
@@ -50,14 +52,13 @@ sub fuzzy_msgid {
 sub fuzzy_msgid_plural {
     my $self = shift;
     @_
-      ? $self->{'fuzzy_msgid_plural'} =
-        $self->quote(shift)
-      : $self->{'fuzzy_msgid_plural'};
+        ? $self->{'fuzzy_msgid_plural'} = $self->quote(shift)
+        : $self->{'fuzzy_msgid_plural'};
 }
 
 sub msgctxt {
-	my $self = shift;
-	@_ ? $self->{'msgctxt'} = $self->quote(shift) : $self->{'msgctxt'};
+    my $self = shift;
+    @_ ? $self->{'msgctxt'} = $self->quote(shift) : $self->{'msgctxt'};
 }
 
 sub msgid {
@@ -68,9 +69,8 @@ sub msgid {
 sub msgid_plural {
     my $self = shift;
     @_
-      ? $self->{'msgid_plural'} =
-        $self->quote(shift)
-      : $self->{'msgid_plural'};
+        ? $self->{'msgid_plural'} = $self->quote(shift)
+        : $self->{'msgid_plural'};
 }
 
 sub msgstr {
@@ -84,17 +84,15 @@ sub msgstr_n {
         my $hashref = shift;
 
         # check that we have a hashref.
-        croak
-          'Argument to msgstr_n must be a hashref: { n => "string n", ... }.'
-          unless ref($hashref) eq 'HASH';
+        croak 'Argument to msgstr_n must be a hashref: { n => "string n", ... }.'
+            unless ref($hashref) eq 'HASH';
 
         # Check that the keys are all numbers.
         croak 'Keys to msgstr_n hashref must be numbers'
-          if grep { m/\D/ } keys %$hashref;
+            if grep {m/\D/} keys %$hashref;
 
         # Quote all the values in the hashref.
-        $self->{'msgstr_n'}{$_} = $self->quote( $$hashref{$_} )
-          for keys %$hashref;
+        $self->{'msgstr_n'}{$_} = $self->quote($$hashref{$_}) for keys %$hashref;
 
     }
 
@@ -103,30 +101,30 @@ sub msgstr_n {
 
 sub comment {
     my $self = shift;
-    @_ ? $self->{'comment'} = shift: $self->{'comment'};
+    @_ ? $self->{'comment'} = shift : $self->{'comment'};
 }
 
 sub automatic {
     my $self = shift;
-    @_ ? $self->{'automatic'} = shift: $self->{'automatic'};
+    @_ ? $self->{'automatic'} = shift : $self->{'automatic'};
 }
 
 sub reference {
     my $self = shift;
-    @_ ? $self->{'reference'} = shift: $self->{'reference'};
+    @_ ? $self->{'reference'} = shift : $self->{'reference'};
 }
 
 sub obsolete {
     my $self = shift;
-    @_ ? $self->{'obsolete'} = shift: $self->{'obsolete'};
+    @_ ? $self->{'obsolete'} = shift : $self->{'obsolete'};
 }
 
 sub fuzzy {
     my $self = shift;
 
     if (@_) {
-	    my $value = shift;
-	    $value? $self->add_flag('fuzzy') : $self->remove_flag('fuzzy');
+        my $value = shift;
+        $value ? $self->add_flag('fuzzy') : $self->remove_flag('fuzzy');
     }
 
     return $self->has_flag('fuzzy');
@@ -146,34 +144,34 @@ sub php_format {
 
 sub _flags {
     my $self = shift;
-    @_ ? $self->{'_flags'} = shift: $self->{'_flags'};
+    @_ ? $self->{'_flags'} = shift : $self->{'_flags'};
 }
 
 sub _tri_value_flag {
-    my $self = shift;
+    my $self      = shift;
     my $flag_name = shift;
-    if (@_) { # set or clear the flags
-	my $value = shift;
-	if (!defined($value) || $value eq "") {
-		$self->remove_flag("$flag_name");
-		$self->remove_flag("no-$flag_name");
-	    return undef;
-	}
-	elsif ($value) {
-		$self->add_flag("$flag_name");
-		$self->remove_flag("no-$flag_name");
-	    return 1;
-	}
-	else {
-		$self->add_flag("no-$flag_name");
-	    $self->remove_flag("$flag_name");
-	    return 0;
-	}
+    if (@_) {    # set or clear the flags
+        my $value = shift;
+        if (!defined($value) || $value eq "") {
+            $self->remove_flag("$flag_name");
+            $self->remove_flag("no-$flag_name");
+            return undef;
+        }
+        elsif ($value) {
+            $self->add_flag("$flag_name");
+            $self->remove_flag("no-$flag_name");
+            return 1;
+        }
+        else {
+            $self->add_flag("no-$flag_name");
+            $self->remove_flag("$flag_name");
+            return 0;
+        }
     }
-    else { # check the flags
-	return 1 if $self->has_flag("$flag_name");
-	return 0 if $self->has_flag("no-$flag_name");
-	return undef;
+    else {    # check the flags
+        return 1 if $self->has_flag("$flag_name");
+        return 0 if $self->has_flag("no-$flag_name");
+        return undef;
     }
 }
 
@@ -187,7 +185,7 @@ sub remove_flag {
     my ($self, $flag_name) = @_;
     my @new_flags;
     foreach my $flag (@{$self->_flags}) {
-	    push @new_flags, $flag unless $flag eq $flag_name;
+        push @new_flags, $flag unless $flag eq $flag_name;
     }
     $self->_flags(\@new_flags);
     return;
@@ -196,14 +194,14 @@ sub remove_flag {
 sub has_flag {
     my ($self, $flag_name) = @_;
     foreach my $flag (@{$self->_flags}) {
-	    return 1 if $flag eq $flag_name;
+        return 1 if $flag eq $flag_name;
     }
     return;
 }
 
 sub loaded_line_number {
     my $self = shift;
-    @_ ? $self->{'loaded_line_number'} = shift: $self->{'loaded_line_number'};
+    @_ ? $self->{'loaded_line_number'} = shift : $self->{'loaded_line_number'};
 }
 
 sub _normalize_str {
@@ -212,12 +210,13 @@ sub _normalize_str {
     my $dequoted = $self->dequote($string);
 
     # This isn't quite perfect, but it's fast and easy
-    if ( $dequoted =~ /(^|[^\\])(\\\\)*\\n./ ) {
+    if ($dequoted =~ /(^|[^\\])(\\\\)*\\n./) {
+
         # Multiline
         my $output;
         my @lines;
         $output = '""' . "\n";
-        @lines = split( /\\n/, $dequoted, -1 );
+        @lines = split(/\\n/, $dequoted, -1);
         my $lastline = pop @lines;    # special treatment for this one
         foreach (@lines) {
             $output .= $self->quote("$_\\n") . "\n";
@@ -226,13 +225,14 @@ sub _normalize_str {
         return $output;
     }
     else {
+
         # Single line
         return "$string\n";
     }
 }
 
 sub _fuzzy_normalize_str {
-    my $self = shift;
+    my $self   = shift;
     my $string = shift;
     my $prefix = shift;
 
@@ -245,48 +245,51 @@ sub _fuzzy_normalize_str {
 }
 
 sub dump {
-    my $self = shift;
-    my $obsolete = $self->obsolete? '#~ ' : '';
-    my $fuzzy_prefix = $self->obsolete? '#~| ' : '#| ';
+    my $self         = shift;
+    my $obsolete     = $self->obsolete ? '#~ ' : '';
+    my $fuzzy_prefix = $self->obsolete ? '#~| ' : '#| ';
     my $dump;
 
-    $dump = $self->_dump_multi_comment( $self->comment, "# " )
-      if ( $self->comment );
-    $dump .= $self->_dump_multi_comment( $self->automatic, "#. " )
-      if ( $self->automatic );
-    $dump .= $self->_dump_multi_comment( $self->reference, "#: " )
-      if ( $self->reference );
+    $dump = $self->_dump_multi_comment($self->comment, "# ")
+        if ($self->comment);
+    $dump .= $self->_dump_multi_comment($self->automatic, "#. ")
+        if ($self->automatic);
+    $dump .= $self->_dump_multi_comment($self->reference, "#: ")
+        if ($self->reference);
 
     my $flags = '';
 
     foreach my $flag (@{$self->_flags}) {
-        $flags .= ", $flag"
+        $flags .= ", $flag";
     }
 
     $dump .= "#$flags\n"
-      if length $flags;
+        if length $flags;
 
-    $dump .= "${fuzzy_prefix}msgctxt "
-          . $self->_fuzzy_normalize_str( $self->fuzzy_msgctxt, $fuzzy_prefix )
-		if $self->fuzzy_msgctxt;
-    $dump .= "${fuzzy_prefix}msgid "
-          . $self->_fuzzy_normalize_str( $self->fuzzy_msgid, $fuzzy_prefix )
-		if $self->fuzzy_msgid;
-    $dump .= "${fuzzy_prefix}msgid_plural "
-          . $self->_fuzzy_normalize_str( $self->fuzzy_msgid_plural, $fuzzy_prefix )
-		if $self->fuzzy_msgid_plural;
+    $dump
+        .= "${fuzzy_prefix}msgctxt "
+        . $self->_fuzzy_normalize_str($self->fuzzy_msgctxt, $fuzzy_prefix)
+        if $self->fuzzy_msgctxt;
+    $dump
+        .= "${fuzzy_prefix}msgid "
+        . $self->_fuzzy_normalize_str($self->fuzzy_msgid, $fuzzy_prefix)
+        if $self->fuzzy_msgid;
+    $dump
+        .= "${fuzzy_prefix}msgid_plural "
+        . $self->_fuzzy_normalize_str($self->fuzzy_msgid_plural, $fuzzy_prefix)
+        if $self->fuzzy_msgid_plural;
 
-    $dump .= "${obsolete}msgctxt " . $self->_normalize_str( $self->msgctxt )
-		if $self->msgctxt;
-    $dump .= "${obsolete}msgid " . $self->_normalize_str( $self->msgid );
-    $dump .= "${obsolete}msgid_plural " . $self->_normalize_str( $self->msgid_plural )
-		if $self->msgid_plural;
+    $dump .= "${obsolete}msgctxt " . $self->_normalize_str($self->msgctxt)
+        if $self->msgctxt;
+    $dump .= "${obsolete}msgid " . $self->_normalize_str($self->msgid);
+    $dump .= "${obsolete}msgid_plural " . $self->_normalize_str($self->msgid_plural)
+        if $self->msgid_plural;
 
-    $dump .= "${obsolete}msgstr " . $self->_normalize_str( $self->msgstr ) if $self->msgstr;
+    $dump .= "${obsolete}msgstr " . $self->_normalize_str($self->msgstr) if $self->msgstr;
 
-    if ( my $msgstr_n = $self->msgstr_n ) {
-        $dump .= "${obsolete}msgstr[$_] " . $self->_normalize_str( $$msgstr_n{$_} )
-          for sort { $a <=> $b } keys %$msgstr_n;
+    if (my $msgstr_n = $self->msgstr_n) {
+        $dump .= "${obsolete}msgstr[$_] " . $self->_normalize_str($$msgstr_n{$_})
+            for sort { $a <=> $b } keys %$msgstr_n;
     }
 
     $dump .= "\n";
@@ -312,7 +315,7 @@ sub quote {
     my $string = shift;
 
     return undef
-      unless defined $string;
+        unless defined $string;
 
     $string =~ s/"/\\"/g;
     return "\"$string\"";
@@ -323,7 +326,7 @@ sub dequote {
     my $string = shift;
 
     return undef
-      unless defined $string;
+        unless defined $string;
 
     $string =~ s/^"(.*)"/$1/;
     $string =~ s/\\"/"/g;
@@ -333,24 +336,24 @@ sub dequote {
 
 sub save_file_fromarray {
     my $self = shift;
-    $self->_save_file( 0, @_ );
+    $self->_save_file(0, @_);
 }
 
 sub save_file_fromhash {
     my $self = shift;
-    $self->_save_file( 1, @_ );
+    $self->_save_file(1, @_);
 }
 
 sub _save_file {
-    my $self    = shift;
-    my $ashash  = shift;
-    my $file    = shift;
-    my $entries = shift;
+    my $self     = shift;
+    my $ashash   = shift;
+    my $file     = shift;
+    my $entries  = shift;
     my $encoding = shift;
 
-    open( OUT, defined($encoding) ? ">:encoding($encoding)" : ">", $file ) or return undef;
+    open(OUT, defined($encoding) ? ">:encoding($encoding)" : ">", $file) or return undef;
     if ($ashash) {
-        foreach ( sort keys %$entries ) {
+        foreach (sort keys %$entries) {
             print OUT $entries->{$_}->dump;
         }
     }
@@ -365,68 +368,71 @@ sub _save_file {
 
 sub load_file_asarray {
     my $self = shift;
-    $self->_load_file( 0, @_ );
+    $self->_load_file(0, @_);
 }
 
 sub load_file_ashash {
     my $self = shift;
-    $self->_load_file( 1, @_ );
+    $self->_load_file(1, @_);
 }
 
 sub _load_file {
-    my $self   = shift;
-    my $ashash = shift;
-    my $file   = shift;
+    my $self     = shift;
+    my $ashash   = shift;
+    my $file     = shift;
     my $encoding = shift;
-    my $class  = ref $self || $self;
-    my ( @entries, %entries );
+    my $class    = ref $self || $self;
+    my (@entries, %entries);
     my $line_number = 0;
     my $po;
     my %buffer;
     my $last_buffer;
 
-    open( IN, defined($encoding) ? "<:encoding($encoding)" : "<", $file )
-      or return undef;
+    open(IN, defined($encoding) ? "<:encoding($encoding)" : "<", $file)
+        or return undef;
 
     while (<IN>) {
         chop;
-		$line_number++;
+        $line_number++;
         if (/^$/) {
 
             # Empty line. End of an entry.
 
-            if ( defined($po) ) {
-            	$po->fuzzy_msgctxt( $buffer{fuzzy_msgctxt} ) if defined $buffer{fuzzy_msgctxt};
-                $po->fuzzy_msgid( $buffer{fuzzy_msgid} ) if defined $buffer{fuzzy_msgid};
-                $po->fuzzy_msgid_plural( $buffer{fuzzy_msgid_plural} ) if defined $buffer{fuzzy_msgid_plural};
-            	$po->msgctxt( $buffer{msgctxt} ) if defined $buffer{msgctxt};
-                $po->msgid( $buffer{msgid} ) if defined $buffer{msgid};
-                $po->msgid_plural( $buffer{msgid_plural} ) if defined $buffer{msgid_plural};
-                $po->msgstr( $buffer{msgstr} ) if defined $buffer{msgstr};
-                $po->msgstr_n( $buffer{msgstr_n} ) if defined $buffer{msgstr_n};
+            if (defined($po)) {
+                $po->fuzzy_msgctxt($buffer{fuzzy_msgctxt})
+                    if defined $buffer{fuzzy_msgctxt};
+                $po->fuzzy_msgid($buffer{fuzzy_msgid}) if defined $buffer{fuzzy_msgid};
+                $po->fuzzy_msgid_plural($buffer{fuzzy_msgid_plural})
+                    if defined $buffer{fuzzy_msgid_plural};
+                $po->msgctxt($buffer{msgctxt})           if defined $buffer{msgctxt};
+                $po->msgid($buffer{msgid})               if defined $buffer{msgid};
+                $po->msgid_plural($buffer{msgid_plural}) if defined $buffer{msgid_plural};
+                $po->msgstr($buffer{msgstr})             if defined $buffer{msgstr};
+                $po->msgstr_n($buffer{msgstr_n})         if defined $buffer{msgstr_n};
 
 
-		# ashash
-		if ($ashash) {
-		    $entries{ $po->msgid } = $po
-		      if ( $po->_hash_key_ok(\%entries) );
-		}
-		# asarray
-		else {
-		    push( @entries, $po );
-		}
+                # ashash
+                if ($ashash) {
+                    $entries{$po->msgid} = $po
+                        if ($po->_hash_key_ok(\%entries));
+                }
+
+                # asarray
+                else {
+                    push(@entries, $po);
+                }
 
                 undef $po;
                 undef $last_buffer;
                 %buffer = ();
             }
         }
-        elsif ( /^#\s+(.*)/ or /^#()$/ ) {
+        elsif (/^#\s+(.*)/ or /^#()$/) {
 
             # Translator comments
-            $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
-            if ( defined( $po->comment ) ) {
-                $po->comment( $po->comment . "\n$1" );
+            $po = $class->new(-loaded_line_number => $line_number) unless defined($po);
+            if (defined($po->comment)) {
+                $po->comment($po->comment . "\n$1");
             }
             else {
                 $po->comment($1);
@@ -435,9 +441,9 @@ sub _load_file {
         elsif (/^#\.\s*(.*)/) {
 
             # Automatic comments
-            $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
-            if ( defined( $po->automatic ) ) {
-                $po->automatic( $po->automatic . "\n$1" );
+            $po = $class->new(-loaded_line_number => $line_number) unless defined($po);
+            if (defined($po->automatic)) {
+                $po->automatic($po->automatic . "\n$1");
             }
             else {
                 $po->automatic($1);
@@ -446,9 +452,9 @@ sub _load_file {
         elsif (/^#:\s+(.*)/) {
 
             # reference
-            $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
-            if ( defined( $po->reference ) ) {
-                $po->reference( $po->reference . "\n$1" );
+            $po = $class->new(-loaded_line_number => $line_number) unless defined($po);
+            if (defined($po->reference)) {
+                $po->reference($po->reference . "\n$1");
             }
             else {
                 $po->reference($1);
@@ -458,44 +464,43 @@ sub _load_file {
 
             # flags
             my @flags = split /\s*[,]\s*/, $1;
-            $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
-            foreach my $flag (@flags)
-            {
+            $po = $class->new(-loaded_line_number => $line_number) unless defined($po);
+            foreach my $flag (@flags) {
                 $po->add_flag($flag);
             }
         }
         elsif (/^#(~)?\|\s+msgctxt\s+(.*)/) {
-            $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
+            $po = $class->new(-loaded_line_number => $line_number) unless defined($po);
             $buffer{fuzzy_msgctxt} = $self->dequote($2);
             $last_buffer = \$buffer{fuzzy_msgctxt};
             $po->obsolete(1) if $1;
         }
         elsif (/^#(~)?\|\s+msgid\s+(.*)/) {
-            $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
+            $po = $class->new(-loaded_line_number => $line_number) unless defined($po);
             $buffer{fuzzy_msgid} = $self->dequote($2);
             $last_buffer = \$buffer{fuzzy_msgid};
             $po->obsolete(1) if $1;
         }
         elsif (/^#(~)?\|\s+msgid_plural\s+(.*)/) {
-            $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
+            $po = $class->new(-loaded_line_number => $line_number) unless defined($po);
             $buffer{fuzzy_msgid_plural} = $self->dequote($2);
             $last_buffer = \$buffer{fuzzy_msgid_plural};
             $po->obsolete(1) if $1;
         }
         elsif (/^(#~\s+)?msgctxt\s+(.*)/) {
-            $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
+            $po = $class->new(-loaded_line_number => $line_number) unless defined($po);
             $buffer{msgctxt} = $self->dequote($2);
             $last_buffer = \$buffer{msgctxt};
             $po->obsolete(1) if $1;
         }
         elsif (/^(#~\s+)?msgid\s+(.*)/) {
-            $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
+            $po = $class->new(-loaded_line_number => $line_number) unless defined($po);
             $buffer{msgid} = $self->dequote($2);
             $last_buffer = \$buffer{msgid};
             $po->obsolete(1) if $1;
         }
         elsif (/^(#~\s+)?msgid_plural\s+(.*)/) {
-            $po = $class->new( -loaded_line_number => $line_number ) unless defined($po);
+            $po = $class->new(-loaded_line_number => $line_number) unless defined($po);
             $buffer{msgid_plural} = $self->dequote($2);
             $last_buffer = \$buffer{msgid_plural};
             $po->obsolete(1) if $1;
@@ -525,48 +530,50 @@ sub _load_file {
             warn "Strange line at $file line $line_number: $_\n";
         }
     }
-    if ( defined($po) ) {
+    if (defined($po)) {
 
-        $po->msgctxt( $buffer{msgctxt} )
-	  if defined $buffer{msgctxt};
-        $po->msgid( $buffer{msgid} )
-	  if defined $buffer{msgid};
-        $po->msgid_plural( $buffer{msgid_plural} )
-	  if defined $buffer{msgid_plural};
-        $po->msgstr( $buffer{msgstr} )
-	  if defined $buffer{msgstr};
-        $po->msgstr_n( $buffer{msgstr_n} )
-	  if defined $buffer{msgstr_n};
+        $po->msgctxt($buffer{msgctxt})
+            if defined $buffer{msgctxt};
+        $po->msgid($buffer{msgid})
+            if defined $buffer{msgid};
+        $po->msgid_plural($buffer{msgid_plural})
+            if defined $buffer{msgid_plural};
+        $po->msgstr($buffer{msgstr})
+            if defined $buffer{msgstr};
+        $po->msgstr_n($buffer{msgstr_n})
+            if defined $buffer{msgstr_n};
 
         # ashash
         if ($ashash) {
-            if ( $po->_hash_key_ok(\%entries) ) {
-                $entries{ $po->msgid } = $po;
+            if ($po->_hash_key_ok(\%entries)) {
+                $entries{$po->msgid} = $po;
             }
         }
+
         # asarray
         else {
-            push( @entries, $po );
+            push(@entries, $po);
         }
     }
     close IN;
-    return ( $ashash ? \%entries : \@entries );
+    return ($ashash ? \%entries : \@entries);
 }
 
 sub _hash_key_ok {
-	my ($self, $entries) = @_;
+    my ($self, $entries) = @_;
 
-	my $key = $self->msgid;
+    my $key = $self->msgid;
 
-	if ($entries->{$key}) {
-	    # don't overwrite non-obsolete entries with obsolete ones
-	    return if ( ($self->obsolete) && (not $entries->{$key}->obsolete) );
+    if ($entries->{$key}) {
 
-	    # don't overwrite translated entries with untranslated ones
-	    return if ( ($self->msgstr !~ /\w/) && ($entries->{$key}->msgstr =~ /\w/) );
-	}
+        # don't overwrite non-obsolete entries with obsolete ones
+        return if (($self->obsolete) && (not $entries->{$key}->obsolete));
 
-	return 1;
+        # don't overwrite translated entries with untranslated ones
+        return if (($self->msgstr !~ /\w/) && ($entries->{$key}->msgstr =~ /\w/));
+    }
+
+    return 1;
 }
 
 # Autoload methods go after =cut, and are processed by the autosplit program.
