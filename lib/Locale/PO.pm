@@ -11,7 +11,7 @@ sub new {
     my $class   = ref($this) || $this;
     my $self    = {};
     bless $self, $class;
-	$self->_flags([]);
+    $self->_flags([]);
     $self->fuzzy_msgid( $options{'-fuzzy_msgid'} ) if defined( $options{'-fuzzy_msgid'} );
     $self->fuzzy_msgid_plural( $options{'-fuzzy_msgid_plural'} )
       if defined( $options{'-fuzzy_msgid_plural'} );
@@ -21,8 +21,8 @@ sub new {
     $self->msgstr( $options{'-msgstr'} ) if defined( $options{'-msgstr'} );
     $self->msgstr_n( $options{'-msgstr_n'} )
       if defined( $options{'-msgstr_n'} );
-	$self->msgctxt( $options{'-msgctxt'} ) if defined( $options{'-msgctxt'} );
-	$self->fuzzy_msgctxt( $options{'-fuzzy_msgctxt'} ) if defined( $options{'-fuzzy_msgctxt'} );
+    $self->msgctxt( $options{'-msgctxt'} ) if defined( $options{'-msgctxt'} );
+    $self->fuzzy_msgctxt( $options{'-fuzzy_msgctxt'} ) if defined( $options{'-fuzzy_msgctxt'} );
     $self->comment( $options{'-comment'} ) if defined( $options{'-comment'} );
     $self->fuzzy( $options{'-fuzzy'} )     if defined( $options{'-fuzzy'} );
     $self->automatic( $options{'-automatic'} )
@@ -33,13 +33,13 @@ sub new {
     $self->c_format(1) if defined( $options{'-c_format'} );
     $self->c_format(0) if defined( $options{'-no-c-format'} );
     $self->c_format(0) if defined( $options{'-no_c_format'} );
-	$self->loaded_line_number( $options{'-loaded_line_number'} ) if defined( $options{'-loaded_line_number'} );
+    $self->loaded_line_number( $options{'-loaded_line_number'} ) if defined( $options{'-loaded_line_number'} );
     return $self;
 }
 
 sub fuzzy_msgctxt {
-	my $self = shift;
-	@_ ? $self->{'fuzzy_msgctxt'} = $self->quote(shift) : $self->{'fuzzy_msgctxt'};
+    my $self = shift;
+    @_ ? $self->{'fuzzy_msgctxt'} = $self->quote(shift) : $self->{'fuzzy_msgctxt'};
 }
 
 sub fuzzy_msgid {
@@ -56,8 +56,8 @@ sub fuzzy_msgid_plural {
 }
 
 sub msgctxt {
-	my $self = shift;
-	@_ ? $self->{'msgctxt'} = $self->quote(shift) : $self->{'msgctxt'};
+    my $self = shift;
+    @_ ? $self->{'msgctxt'} = $self->quote(shift) : $self->{'msgctxt'};
 }
 
 sub msgid {
@@ -123,21 +123,21 @@ sub obsolete {
 
 sub fuzzy {
     my $self = shift;
-	if (@_) {
-		my $value = shift;
-		$value? $self->add_flag('fuzzy') : $self->remove_flag('fuzzy');
-	}
+    if (@_) {
+        my $value = shift;
+        $value? $self->add_flag('fuzzy') : $self->remove_flag('fuzzy');
+    }
     return $self->has_flag('fuzzy');
 }
 
 sub c_format {
     my $self = shift;
-	return $self->_tri_value_flag('c-format', @_);
+    return $self->_tri_value_flag('c-format', @_);
 }
 
 sub php_format {
     my $self = shift;
-	return $self->_tri_value_flag('php-format', @_);
+    return $self->_tri_value_flag('php-format', @_);
 }
 
 sub _flags {
@@ -149,52 +149,52 @@ sub _tri_value_flag {
     my $self = shift;
     my $flag_name = shift;
     if (@_) { # set or clear the flags
-		my $value = shift;
-		if (!defined($value) || $value eq "") {
-			$self->remove_flag("$flag_name");
-			$self->remove_flag("no-$flag_name");
-		    return undef;
-		}
-		elsif ($value) {
-			$self->add_flag("$flag_name");
-			$self->remove_flag("no-$flag_name");
-		    return 1;
-		}
-		else {
-			$self->add_flag("no-$flag_name");
-		    $self->remove_flag("$flag_name");
-		    return 0;
-		}
+        my $value = shift;
+        if (!defined($value) || $value eq "") {
+            $self->remove_flag("$flag_name");
+            $self->remove_flag("no-$flag_name");
+            return undef;
+        }
+        elsif ($value) {
+            $self->add_flag("$flag_name");
+            $self->remove_flag("no-$flag_name");
+            return 1;
+        }
+        else {
+            $self->add_flag("no-$flag_name");
+            $self->remove_flag("$flag_name");
+            return 0;
+        }
     }
     else { # check the flags
-		return 1 if $self->has_flag("$flag_name");
-		return 0 if $self->has_flag("no-$flag_name");
-		return undef;
+        return 1 if $self->has_flag("$flag_name");
+        return 0 if $self->has_flag("no-$flag_name");
+        return undef;
     }
 }
 
 sub add_flag {
-	my ($self, $flag_name) = @_;
-	push @{$self->_flags}, $flag_name;
-	return;
+    my ($self, $flag_name) = @_;
+    push @{$self->_flags}, $flag_name;
+    return;
 }
 
 sub remove_flag {
-	my ($self, $flag_name) = @_;
-	my @new_flags;
-	foreach my $flag (@{$self->_flags}) {
-		push @new_flags, $flag unless $flag eq $flag_name;
-	}
-	$self->_flags(\@new_flags);
-	return;
+    my ($self, $flag_name) = @_;
+    my @new_flags;
+    foreach my $flag (@{$self->_flags}) {
+        push @new_flags, $flag unless $flag eq $flag_name;
+    }
+    $self->_flags(\@new_flags);
+    return;
 }
 
 sub has_flag {
-	my ($self, $flag_name) = @_;
-	foreach my $flag (@{$self->_flags}) {
-		return 1 if $flag eq $flag_name;
-	}
-	return;
+    my ($self, $flag_name) = @_;
+    foreach my $flag (@{$self->_flags}) {
+        return 1 if $flag eq $flag_name;
+    }
+    return;
 }
 
 sub loaded_line_number {
@@ -244,7 +244,7 @@ sub _fuzzy_normalize_str {
 
 sub dump {
     my $self = shift;
-	my $obsolete = $self->obsolete? '#~ ' : '';
+    my $obsolete = $self->obsolete? '#~ ' : '';
     my $fuzzy_prefix = $self->obsolete? '#~| ' : '#| ';
     my $dump;
     $dump = $self->_dump_multi_comment( $self->comment, "# " )
@@ -263,19 +263,19 @@ sub dump {
 
     $dump .= "${fuzzy_prefix}msgctxt "
           . $self->_fuzzy_normalize_str( $self->fuzzy_msgctxt, $fuzzy_prefix )
-		if $self->fuzzy_msgctxt;
+        if $self->fuzzy_msgctxt;
     $dump .= "${fuzzy_prefix}msgid "
           . $self->_fuzzy_normalize_str( $self->fuzzy_msgid, $fuzzy_prefix )
-		if $self->fuzzy_msgid;
+        if $self->fuzzy_msgid;
     $dump .= "${fuzzy_prefix}msgid_plural "
           . $self->_fuzzy_normalize_str( $self->fuzzy_msgid_plural, $fuzzy_prefix )
-		if $self->fuzzy_msgid_plural;
+        if $self->fuzzy_msgid_plural;
 
     $dump .= "${obsolete}msgctxt " . $self->_normalize_str( $self->msgctxt )
-		if $self->msgctxt;
+        if $self->msgctxt;
     $dump .= "${obsolete}msgid " . $self->_normalize_str( $self->msgid );
     $dump .= "${obsolete}msgid_plural " . $self->_normalize_str( $self->msgid_plural )
-		if $self->msgid_plural;
+        if $self->msgid_plural;
 
     $dump .= "${obsolete}msgstr " . $self->_normalize_str( $self->msgstr ) if $self->msgstr;
 
@@ -360,9 +360,9 @@ sub _load_file {
     my $self   = shift;
     my $file   = shift;
     my $ashash = shift;
-	my $class  = ref $self || $self;
+    my $class  = ref $self || $self;
     my ( @entries, %entries );
-	my $line_number = 0;
+    my $line_number = 0;
     my $po;
     my %buffer;
     my $last_buffer;
@@ -370,32 +370,33 @@ sub _load_file {
 
     while (<IN>) {
         chop;
-		$line_number++;
+        $line_number++;
+
         if (/^$/) {
 
             # Empty line. End of an entry.
 
             if ( defined($po) ) {
             
-            	$po->fuzzy_msgctxt( $buffer{fuzzy_msgctxt} ) if defined $buffer{fuzzy_msgctxt};
+                $po->fuzzy_msgctxt( $buffer{fuzzy_msgctxt} ) if defined $buffer{fuzzy_msgctxt};
                 $po->fuzzy_msgid( $buffer{fuzzy_msgid} ) if defined $buffer{fuzzy_msgid};
                 $po->fuzzy_msgid_plural( $buffer{fuzzy_msgid_plural} ) if defined $buffer{fuzzy_msgid_plural};
-            	$po->msgctxt( $buffer{msgctxt} ) if defined $buffer{msgctxt};
+                $po->msgctxt( $buffer{msgctxt} ) if defined $buffer{msgctxt};
                 $po->msgid( $buffer{msgid} ) if defined $buffer{msgid};
                 $po->msgid_plural( $buffer{msgid_plural} ) if defined $buffer{msgid_plural};
                 $po->msgstr( $buffer{msgstr} ) if defined $buffer{msgstr};
                 $po->msgstr_n( $buffer{msgstr_n} ) if defined $buffer{msgstr_n};
-				
-				# ashash
-				if ($ashash) {
-					if ( $po->_hash_key_ok(\%entries) ) {
-						$entries{ $po->msgid } = $po;
-					}
-				}
-				# asarray
-				else {
-					push( @entries, $po );
-				}
+                
+                # ashash
+                if ($ashash) {
+                    if ( $po->_hash_key_ok(\%entries) ) {
+                        $entries{ $po->msgid } = $po;
+                    }
+                }
+                # asarray
+                else {
+                    push( @entries, $po );
+                }
 
                 undef $po;
                 undef $last_buffer;
@@ -513,7 +514,7 @@ sub _load_file {
         $po->msgid_plural( $buffer{msgid_plural} ) if defined $buffer{msgid_plural};
         $po->msgstr( $buffer{msgstr} ) if defined $buffer{msgstr};
         $po->msgstr_n( $buffer{msgstr_n} ) if defined $buffer{msgstr_n};
-		
+        
         # ashash
         if ($ashash) {
             if ( $po->_hash_key_ok(\%entries) ) {
@@ -525,25 +526,26 @@ sub _load_file {
             push( @entries, $po );
         }
     }
-    close IN;
+
+    close $po_fh;
     return ( $ashash ? \%entries : \@entries );
 }
 
 sub _hash_key_ok {
-	my ($self, $entries) = @_;
-	
-	my $key = $self->msgid;
-	
-	if ($entries->{$key}) {
-	
-		# don't overwrite non-obsolete entries with obsolete ones
-		return if ( ($self->obsolete) && (not $entries->{$key}->obsolete) );
-		
-		# don't overwrite translated entries with untranslated ones
-		return if ( ($self->msgstr !~ /\w/) && ($entries->{$key}->msgstr =~ /\w/) );
-	}
-	
-	return 1;
+    my ($self, $entries) = @_;
+    
+    my $key = $self->msgid;
+    
+    if ($entries->{$key}) {
+    
+        # don't overwrite non-obsolete entries with obsolete ones
+        return if ( ($self->obsolete) && (not $entries->{$key}->obsolete) );
+        
+        # don't overwrite translated entries with untranslated ones
+        return if ( ($self->msgstr !~ /\w/) && ($entries->{$key}->msgstr =~ /\w/) );
+    }
+    
+    return 1;
 }
 
 # Autoload methods go after =cut, and are processed by the autosplit program.
@@ -559,25 +561,25 @@ Locale::PO - Perl module for manipulating .po entries from GNU gettext
 
 =head1 SYNOPSIS
 
-	use Locale::PO;
+    use Locale::PO;
 
-	$po = new Locale::PO([-option=>value,...])
-	[$string =] $po->msgid([new string]);
-	[$string =] $po->msgstr([new string]);
-	[$string =] $po->comment([new string]);
-	[$string =] $po->automatic([new string]);
-	[$string =] $po->reference([new string]);
-	[$value =] $po->fuzzy([value]);
-	[$value =] $po->add_flag('c-format');
-	print $po->dump;
+    $po = new Locale::PO([-option=>value,...])
+    [$string =] $po->msgid([new string]);
+    [$string =] $po->msgstr([new string]);
+    [$string =] $po->comment([new string]);
+    [$string =] $po->automatic([new string]);
+    [$string =] $po->reference([new string]);
+    [$value =] $po->fuzzy([value]);
+    [$value =] $po->add_flag('c-format');
+    print $po->dump;
 
-	$quoted_string = $po->quote($string);
-	$string = $po->dequote($quoted_string);
+    $quoted_string = $po->quote($string);
+    $string = $po->dequote($quoted_string);
 
-	$aref = Locale::PO->load_file_asarray(<filename>);
-	$href = Locale::PO->load_file_ashash(<filename>);
-	Locale::PO->save_file_fromarray(<filename>,$aref);
-	Locale::PO->save_file_fromhash(<filename>,$href);
+    $aref = Locale::PO->load_file_asarray(<filename>);
+    $href = Locale::PO->load_file_ashash(<filename>);
+    Locale::PO->save_file_fromarray(<filename>,$aref);
+    Locale::PO->save_file_fromhash(<filename>,$href);
 
 =head1 DESCRIPTION
 
@@ -591,14 +593,14 @@ interface in which each entry in a .po file is a Locale::PO object.
 
 =item new
 
-	my Locale::PO $po = new Locale::PO;
-	my Locale::PO $po = new Locale::PO(%options);
+    my Locale::PO $po = new Locale::PO;
+    my Locale::PO $po = new Locale::PO(%options);
 
 Create a new Locale::PO object to represent a po entry.
 You can optionally set the attributes of the entry by passing 
 a list/hash of the form:
 
-	-option=>value, -option=>value, etc.
+    -option=>value, -option=>value, etc.
 
 Where options are msgid, msgid_plural, msgstr, msgctxt, comment, automatic,
 reference, fuzzy_msgctxt, fuzzy_msgid, fuzzy_msgid_plural,
@@ -607,14 +609,14 @@ fuzzy, and c-format. See accessor methods below.
 To generate a po file header, add an entry with an empty
 msgid, like this:
 
-	$po = new Locale::PO(-msgid=>'', -msgstr=>
-		"Project-Id-Version: PACKAGE VERSION\\n" .
-		"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\\n" .
-		"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n" .
-		"Language-Team: LANGUAGE <LL@li.org>\\n" .
-		"MIME-Version: 1.0\\n" .
-		"Content-Type: text/plain; charset=CHARSET\\n" .
-		"Content-Transfer-Encoding: ENCODING\\n");
+    $po = new Locale::PO(-msgid=>'', -msgstr=>
+        "Project-Id-Version: PACKAGE VERSION\\n" .
+        "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\\n" .
+        "Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n" .
+        "Language-Team: LANGUAGE <LL@li.org>\\n" .
+        "MIME-Version: 1.0\\n" .
+        "Content-Type: text/plain; charset=CHARSET\\n" .
+        "Content-Transfer-Encoding: ENCODING\\n");
 
 =item msgid
 
@@ -640,12 +642,12 @@ Get or set the translations if there are purals involved. Takes and
 returns a hashref where the keys are the 'N' case and the values are
 the strings. eg:
 
-	$po->msgstr_n(
-	    {
-	        0 => 'found %d plural translations',
-	        1 => 'found %d singular translation',
-	    }
-	);
+    $po->msgstr_n(
+        {
+            0 => 'found %d plural translations',
+            1 => 'found %d singular translation',
+        }
+    );
 
 This method expects the new strings in unquoted form but returns the current strings in quoted form.
 
@@ -725,21 +727,21 @@ This can take 3 values:
 
 =item has_flag
 
-	if ($po->has_flag('perl-format')) {
-		...
-	}
+    if ($po->has_flag('perl-format')) {
+        ...
+    }
 
 Returns true if the flag exists in the entry's #~ comment
 
 =item add_flag
 
-	$po->add_flag('perl-format');
+    $po->add_flag('perl-format');
 
 Adds the flag to the #~ comment
 
 =item remove_flag
 
-	$po->remove_flag('perl-format');
+    $po->remove_flag('perl-format');
 
 Removes the flag from the #~ comment
 
