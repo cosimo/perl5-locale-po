@@ -1,5 +1,11 @@
 Revision history for Perl extension Locale::PO.
 
+0.23  Feb 06 2013
+   -  Bugs RT#76366 and RT#54064 - Added encoding option. Now we can load & save
+      PO files in any encoding, For example in 'utf8'. Added test about this.
+      (patch by Perlover which based on patch from Zach)
+   -  Some code indenting inside.
+
 0.22  Sep 03 2012
    -  New maintainer: Cosimo Streppone (COSIMO)
    -  Bug RT#40009 Incorrect handling of multi-line obsolete entries
@@ -12,7 +18,7 @@ Revision history for Perl extension Locale::PO.
       (patch provided by Cosimo Streppone)
 
 0.20  Mar 15 2008
-   -  BUG #34110 - fixed a rather serious problem with the dist not building on 
+   -  BUG #34110 - fixed a rather serious problem with the dist not building on
       anything but a Mac
 
 0.19  Mar 14 2008
@@ -27,8 +33,8 @@ Revision history for Perl extension Locale::PO.
       Apologies to anyone using these (undocumented) methods.
     - FEATURE: Added "loaded_line_number" accessor which returns the line number
       that an entry started at in the loaded po file
-    - FEATURE: Now preserves any flag encountered in a #~ comment 
-    - Expanded POD 
+    - FEATURE: Now preserves any flag encountered in a #~ comment
+    - Expanded POD
     - Thanks to Kalle Olavi Niemitalo for help in making many of these changes
 
 0.17  Tue May 22 12:07:00 CDT 2007
@@ -46,7 +52,7 @@ Revision history for Perl extension Locale::PO.
 	- #. comments can be multiline. Fix by Kevin Patrick Scannell.
 
 0.13  Fri Nov 21 14:25:01 CDT 2004
-	- Fix to empty comment handling by Frank Ralf 
+	- Fix to empty comment handling by Frank Ralf
 
 0.12  Fri Oct  1 13:00:01 CDT 2004
 	- Fixes to multiline string handling by Michael Soegtrop.
@@ -56,4 +62,3 @@ Revision history for Perl extension Locale::PO.
 
 0.10  Sun Jul 16 14:24:39 2000
 	- original version; created by Alan Schwartz
-
