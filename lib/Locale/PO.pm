@@ -377,7 +377,7 @@ sub _load_file {
             # Empty line. End of an entry.
 
             if ( defined($po) ) {
-            
+
                 $po->fuzzy_msgctxt( $buffer{fuzzy_msgctxt} ) if defined $buffer{fuzzy_msgctxt};
                 $po->fuzzy_msgid( $buffer{fuzzy_msgid} ) if defined $buffer{fuzzy_msgid};
                 $po->fuzzy_msgid_plural( $buffer{fuzzy_msgid_plural} ) if defined $buffer{fuzzy_msgid_plural};
@@ -386,7 +386,7 @@ sub _load_file {
                 $po->msgid_plural( $buffer{msgid_plural} ) if defined $buffer{msgid_plural};
                 $po->msgstr( $buffer{msgstr} ) if defined $buffer{msgstr};
                 $po->msgstr_n( $buffer{msgstr_n} ) if defined $buffer{msgstr_n};
-                
+
                 # ashash
                 if ($ashash) {
                     if ( $po->_hash_key_ok(\%entries) ) {
@@ -514,7 +514,7 @@ sub _load_file {
         $po->msgid_plural( $buffer{msgid_plural} ) if defined $buffer{msgid_plural};
         $po->msgstr( $buffer{msgstr} ) if defined $buffer{msgstr};
         $po->msgstr_n( $buffer{msgstr_n} ) if defined $buffer{msgstr_n};
-        
+
         # ashash
         if ($ashash) {
             if ( $po->_hash_key_ok(\%entries) ) {
@@ -533,18 +533,18 @@ sub _load_file {
 
 sub _hash_key_ok {
     my ($self, $entries) = @_;
-    
+
     my $key = $self->msgid;
-    
+
     if ($entries->{$key}) {
-    
+
         # don't overwrite non-obsolete entries with obsolete ones
         return if ( ($self->obsolete) && (not $entries->{$key}->obsolete) );
-        
+
         # don't overwrite translated entries with untranslated ones
         return if ( ($self->msgstr !~ /\w/) && ($entries->{$key}->msgstr =~ /\w/) );
     }
-    
+
     return 1;
 }
 
@@ -597,7 +597,7 @@ interface in which each entry in a .po file is a Locale::PO object.
     my Locale::PO $po = new Locale::PO(%options);
 
 Create a new Locale::PO object to represent a po entry.
-You can optionally set the attributes of the entry by passing 
+You can optionally set the attributes of the entry by passing
 a list/hash of the form:
 
     -option=>value, -option=>value, etc.
@@ -693,7 +693,7 @@ each comment line nor the newline at the end of the last comment line.
 
 =item automatic
 
-Set or get automatic comments from the object (inserted by 
+Set or get automatic comments from the object (inserted by
 emacs po-mode or xgettext).
 
 If there are no such comments, then the value is undef.  Otherwise,
@@ -715,7 +715,7 @@ When setting, use 1 to turn on fuzzy, and 0 to turn it off.
 
 Set or get the c-format or no-c-format flag on the object.
 
-This can take 3 values: 
+This can take 3 values:
 1 implies c-format, 0 implies no-c-format, and undefined implies neither.
 
 =item php_format
