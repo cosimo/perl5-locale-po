@@ -1,7 +1,7 @@
 Revision history for Perl extension Locale::PO.
 
 0.24 UNRELEASED
-   -  Fix inline "\n" bot being escaped properly.
+   -  Fix inline "\n" not being escaped properly. RT #96016
    -  Ran % !perltidy --profile=perltidyrc on singular.t
 
 
