@@ -210,16 +210,16 @@ sub _normalize_str {
     my $dequoted = $self->dequote($string);
 
     # This isn't quite perfect, but it's fast and easy
-    if ($dequoted =~ /(^|[^\\])(\\\\)*\\n./) {
+    if ($dequoted =~ /\n/) {
 
         # Multiline
         my $output;
         my @lines;
-        $output = '""' . "\n";
-        @lines = split(/\\n/, $dequoted, -1);
+        @lines = split(/\n/, $dequoted, -1);
         my $lastline = pop @lines;    # special treatment for this one
+        $output = qq{""\n} if ($#lines != 0);
         foreach (@lines) {
-            $output .= $self->quote("$_\\n") . "\n";
+            $output .= $self->quote("$_\n") . "\n";
         }
         $output .= $self->quote($lastline) . "\n" if $lastline ne "";
         return $output;
@@ -318,6 +318,8 @@ sub quote {
         unless defined $string;
 
     $string =~ s/"/\\"/g;
+    $string =~ s/(?<!(\\))\\n/\\\\n/g;
+    $string =~ s/\n/\\n/g;
     return "\"$string\"";
 }
 
@@ -330,6 +332,8 @@ sub dequote {
 
     $string =~ s/^"(.*)"/$1/;
     $string =~ s/\\"/"/g;
+    $string =~ s/(?<!(\\))\\n/\n/g;
+    $string =~ s/\\\\n/\\n/g;
 
     return $string;
 }
