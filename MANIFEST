@@ -1,15 +1,15 @@
 Changes
-MANIFEST
-META.yml                                 Module meta-data (added by MakeMaker)
-Makefile.PL
 lib/Locale/PO.pm
+Makefile.PL
+MANIFEST
+META.yml			Module meta-data (added by MakeMaker)
 README
 t/fuzzy.pot
 t/fuzzy.t
-t/RT40009.t
-t/RT40009.po
 t/plurals.pot
 t/plurals.t
+t/RT40009.po
+t/RT40009.t
 t/singular.t
 t/subclass.t
 t/test.pot

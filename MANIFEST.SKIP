@@ -1,0 +1,16 @@
+\B\.gitignore$
+\B\.git\b
+\.swp$
+\.swo$
+\bblib
+Locale-PO.*.tar.gz
+t/*.out
+Makefile.old
+^MANIFEST\.SKIP$
+\.bak$
+\bpm_to_blib$
+\bMakefile$
+^MYMETA.*$
+^META.json$
+^perltidyrc$
+

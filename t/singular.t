@@ -92,3 +92,11 @@ $po->msgid($str);
 my $got = $po->dump($str);
 is($got, $expected, 'inline newline');
 
+@po = $po;
+ok Locale::PO->save_file_fromarray("t/test3.pot.out", \@po), "inline newline save file from array";
+
+$pos = Locale::PO->load_file_asarray("t/test3.pot.out");
+ok $pos, "loaded test3.pot.out file";
+
+is($po->msgid, $pos->[0]->msgid, "inline newline reload");
+

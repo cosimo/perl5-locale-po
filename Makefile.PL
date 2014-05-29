@@ -9,5 +9,7 @@ WriteMakefile(
         'Test::More'  => 0,
     },
     ABSTRACT_FROM => 'lib/Locale/PO.pm',
-    VERSION_FROM => 'lib/Locale/PO.pm',
+    VERSION_FROM  => 'lib/Locale/PO.pm',
+    clean         => { FILES => "t/*.out" },
+
 );
