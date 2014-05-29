@@ -4,3 +4,8 @@ Makefile
 blib
 pm_to_blib
 Makefile.old
+*.swp
+*.swo
+t/*.out
+MANIFEST.bak
+*.tar.gz
