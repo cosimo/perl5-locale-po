@@ -1,14 +1,13 @@
 Revision history for Perl extension Locale::PO.
 
-0.24 UNRELEASED
+0.24  May 29 2014
    -  Fix inline "\n" not being escaped properly. RT #96016
-   -  Ran % !perltidy --profile=perltidyrc on singular.t
-
+      Thanks to Jeff Dearney for bug report and patch.
 
 0.23  Feb 06 2013
    -  Bugs RT#76366 and RT#54064 - Added encoding option. Now we can load & save
       PO files in any encoding, For example in 'utf8'. Added test about this.
-      (patch by Perlover which based on patch from Zach)
+      (patch by Perlover, based on patch from Zach)
    -  Some code indenting inside.
 
 0.22  Sep 03 2012
