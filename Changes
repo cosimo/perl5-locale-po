@@ -1,8 +1,11 @@
 Revision history for Perl extension Locale::PO.
 
+0.25  UNRELEASED
+   -  Fix \ not being escaped. RT #99069
+
 0.24  May 29 2014
    -  Fix inline "\n" not being escaped properly. RT #96016
-      Thanks to Jeff Dearney for bug report and patch.
+      Thanks to Jeff Fearn for bug report and patch.
 
 0.23  Feb 06 2013
    -  Bugs RT#76366 and RT#54064 - Added encoding option. Now we can load & save

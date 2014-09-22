@@ -1,7 +1,7 @@
 package Locale::PO;
 use strict;
 use warnings;
-our $VERSION = '0.24';
+our $VERSION = '0.25_1';
 
 use Carp;
 
@@ -317,8 +317,8 @@ sub quote {
     return undef
         unless defined $string;
 
+    $string =~ s/\\(?!t)/\\\\/g;           # \t is a tab
     $string =~ s/"/\\"/g;
-    $string =~ s/(?<!(\\))\\n/\\\\n/g;
     $string =~ s/\n/\\n/g;
     return "\"$string\"";
 }
@@ -332,9 +332,11 @@ sub dequote {
 
     $string =~ s/^"(.*)"/$1/;
     $string =~ s/\\"/"/g;
-    $string =~ s/(?<!(\\))\\n/\n/g;
-    $string =~ s/\\\\n/\\n/g;
-
+    $string =~ s/(?<!(\\))\\n/\n/g;        # newline
+    $string =~ s/(?<!(\\))\\{2}n/\\n/g;    # inline newline
+    $string =~ s/(?<!(\\))\\{3}n/\\\n/g;   # \ followed by newline
+    $string =~ s/\\{4}n/\\\\n/g;           # \ followed by inline newline
+    $string =~ s/\\\\(?!n)/\\/g;           # all slashes not related to a newline
     return $string;
 }
 
