@@ -71,19 +71,19 @@ is(read_file("t/test.pot"), read_file("t/test.pot.out"), "found no matches - goo
 
 my $str = <<'EOT';
 #!/usr/bin/perl
-use strict;
+use strict; \
 use warnings;
 
-print "Hello, World!\n";
+print "Hello,\\n World!\n";
 EOT
 
 my $expected = <<'EOT';
 msgid ""
 "#!/usr/bin/perl\n"
-"use strict;\n"
+"use strict; \\\n"
 "use warnings;\n"
 "\n"
-"print \"Hello, World!\\n\";\n"
+"print \"Hello,\\\\n World!\\n\";\n"
 
 EOT
 
