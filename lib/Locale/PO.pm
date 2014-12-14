@@ -391,7 +391,6 @@ sub _load_file {
     my $po;
     my %buffer;
     my $last_buffer;
-    my $on_msys = $^O eq 'msys';
 
     open(IN, defined($encoding) ? "<:encoding($encoding)" : "<", $file)
         or return undef;
@@ -400,8 +399,15 @@ sub _load_file {
         chomp;
         $line_number++;
 
-        # Strip trailing \r chars (msys perl build only)
-        s{\r*$}{} if $on_msys;
+        #
+        # Strip trailing \r\n chars
+        #
+        # This can possibly have an effect only on msys (on which chomp
+        # seems to leave some trailing \r chars) and on MacOS that has
+        # reversed newline (\n\r).
+        # Note that our stripping of those trailing chars is only going to be
+        # useful when writing from one platform and reading on another.
+        s{[\r\n]*$}{};
 
         if (/^$/) {
 
