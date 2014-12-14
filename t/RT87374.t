@@ -15,7 +15,7 @@ https://rt.cpan.org/Ticket/Display.html?id=87374
 use strict;
 use warnings;
 
-use Test::More tests => 6;
+use Test::More tests => 7;
 use Locale::PO;
 use Data::Dumper;
 
@@ -31,14 +31,31 @@ ok -e "${file}.out", "the file now exists";
 
 my $po_after_rt = Locale::PO->load_file_asarray("${file}.out");
 ok $po_after_rt, "loaded ${file}.out file"
-    and unlink "${file}.out"; 
+	and unlink "${file}.out"; 
 
-my $orig_entry = $po->[1];
-my $new_entry  = $po_after_rt->[1];
+my $entry_id;
+my $our_msgid = q{"Some string"};
 
-is_deeply $orig_entry => $new_entry,
-    "We have the same entry before and after a round trip";
+for (my $i = 0; $i <= $#$po; $i++) {
+	my $entry = $po->[$i];
+	if (defined $entry->{msgid} && $entry->{msgid} eq $our_msgid) {
+		$entry_id = $i;
+		last;
+	}
+}
 
-is $new_entry->msgstr =>
-    q("Some translated string"),
-    "Windows line endings are correctly removed when loading a PO file";
+if (! defined $entry_id) {
+	ok(0, "not found our PO entry");
+	ok(0, "not found our PO entry");
+}
+else {
+	my $orig_entry = $po->[$entry_id];
+	my $new_entry  = $po_after_rt->[$entry_id];
+
+	is_deeply $orig_entry => $new_entry,
+		"We have the same entry before and after a round trip";
+
+	is $new_entry->msgstr =>
+		q("Some translated string"),
+		"Windows line endings are correctly removed when loading a PO file";
+}

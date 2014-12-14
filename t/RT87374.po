@@ -1,3 +1,6 @@
+#
+# Just a test of a po file with windows line endings
+#
 #, fuzzy
 msgid ""
 msgstr ""
@@ -11,10 +14,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-
-#
-# Just a test of a po file with windows line endings
-#
 
 #: test.html:1
 msgid "Some string"
