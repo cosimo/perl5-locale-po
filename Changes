@@ -1,5 +1,9 @@
 Revision history for Perl extension Locale::PO.
 
+0.26  Dec 14 2014
+   -  Fix RT#42811 (don't add a flag twice). Thanks to Jason Sill for his
+      bug report from 2009 (!). Jason, sorry and better late than never.
+
 0.25  Dec 14 2014
    -  This release now should work reliably on Linux, MSWin32, msys and
       I believe also MacOS, also when writing PO files from one platform

@@ -1,7 +1,7 @@
 package Locale::PO;
 use strict;
 use warnings;
-our $VERSION = '0.25';
+our $VERSION = '0.26';
 
 use Carp;
 
@@ -177,7 +177,9 @@ sub _tri_value_flag {
 
 sub add_flag {
     my ($self, $flag_name) = @_;
-    push @{$self->_flags}, $flag_name;
+    if (! $self->has_flag($flag_name)) {
+        push @{$self->_flags}, $flag_name;
+    }
     return;
 }
 
