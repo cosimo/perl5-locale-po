@@ -1,7 +1,7 @@
 package Locale::PO;
 use strict;
 use warnings;
-our $VERSION = '0.24_99';
+our $VERSION = '0.25';
 
 use Carp;
 
@@ -354,7 +354,8 @@ sub _save_file {
     my $entries  = shift;
     my $encoding = shift;
 
-    open(OUT, defined($encoding) ? ">:encoding($encoding)" : ">", $file) or return undef;
+    open(OUT, defined($encoding) ? ">:encoding($encoding)" : ">", $file)
+		or return undef;
     if ($ashash) {
         foreach (sort keys %$entries) {
             print OUT $entries->{$_}->dump;
@@ -390,13 +391,18 @@ sub _load_file {
     my $po;
     my %buffer;
     my $last_buffer;
+    my $on_msys = $^O eq 'msys';
 
     open(IN, defined($encoding) ? "<:encoding($encoding)" : "<", $file)
         or return undef;
 
     while (<IN>) {
-        chop;
+        chomp;
         $line_number++;
+
+        # Strip trailing \r chars (msys perl build only)
+        s{\r*$}{} if $on_msys;
+
         if (/^$/) {
 
             # Empty line. End of an entry.
@@ -530,7 +536,7 @@ sub _load_file {
             $$last_buffer .= $self->dequote($1);
         }
         else {
-            warn "Strange line at $file line $line_number: $_\n";
+            warn "Strange line at $file line $line_number: [$_]\n";
         }
     }
     if (defined($po)) {

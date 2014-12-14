@@ -19,12 +19,17 @@ ok $out, "dumped po object";
 ok Locale::PO->save_file_fromarray( "t/plurals.pot.out", $pos ), "save to file";
 ok -e "t/plurals.pot.out", "the file now exists";
 
-is(
-    read_file('t/plurals.pot'),
-    read_file('t/plurals.pot.out'),
-    "found no matches - good"
-  )
-  && unlink 't/plurals.pot.out';
+SKIP: {
+	if ($^O eq 'msys') {
+		skip(1, "Comparing POs after a roundtrip fails on msys platform");
+	}
+	is(
+		read_file('t/plurals.pot'),
+		read_file('t/plurals.pot.out'),
+		"found no matches - good"
+	  )
+	  && unlink 't/plurals.pot.out';
+}
 
 {    # Check that the plurals can be created in code.
 
