@@ -1,7 +1,7 @@
 package Locale::PO;
 use strict;
 use warnings;
-our $VERSION = '0.25_1';
+our $VERSION = '0.24_99';
 
 use Carp;
 
@@ -209,10 +209,8 @@ sub _normalize_str {
     my $string   = shift;
     my $dequoted = $self->dequote($string);
 
-    # This isn't quite perfect, but it's fast and easy
-    if ($dequoted =~ /\n/) {
-
-        # Multiline
+    # Multiline: this isn't quite perfect, but fast and easy
+    if (defined $dequoted && $dequoted =~ /\n/) {
         my $output;
         my @lines;
         @lines = split(/\n/, $dequoted, -1);
@@ -224,10 +222,9 @@ sub _normalize_str {
         $output .= $self->quote($lastline) . "\n" if $lastline ne "";
         return $output;
     }
+    # Single line
     else {
-
-        # Single line
-        return "$string\n";
+        return ($string || "") . "\n";
     }
 }
 
