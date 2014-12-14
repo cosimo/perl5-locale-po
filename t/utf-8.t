@@ -14,7 +14,7 @@ use strict;
 use warnings;
 use utf8;
 
-use Test::More;
+use Test::More tests => 8;
 use File::Slurp;
 use Locale::PO;
 use Data::Dumper;
@@ -44,5 +44,3 @@ is $new_entry->msgstr =>
     "Multiline obsolete strings are conserved";
 
 ok utf8::is_utf8( $new_entry->msgstr ), "Entry is UTF-8 marked string";
-
-done_testing();
