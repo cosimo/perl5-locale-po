@@ -10,6 +10,12 @@ t/plurals.pot
 t/plurals.t
 t/RT40009.po
 t/RT40009.t
+t/RT42811.po
+t/RT42811.t
+t/RT87374.po
+t/RT87374.t
+t/RT94231.po
+t/RT94231.t
 t/singular.t
 t/subclass.t
 t/test.pot

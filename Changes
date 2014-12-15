@@ -1,5 +1,10 @@
 Revision history for Perl extension Locale::PO.
 
+0.27  Dec 15 2014
+   -  Fix RT#94231 (previous — fuzzy — msgid, #|). Thanks to Raphael Hertzog
+      for reporting it. Added a test case now, but previous messages are
+      treated like fuzzy messages, so use fuzzy_msgid().
+
 0.26  Dec 14 2014
    -  Fix RT#42811 (don't add a flag twice). Thanks to Jason Sill for his
       bug report from 2009 (!). Jason, sorry and better late than never.
