@@ -25,7 +25,7 @@ use Test::More;
 use Locale::PO;
 use Data::Dumper;
 
-my $no_tests = 5;
+my $no_tests = 11;
 
 plan tests => $no_tests;
 
@@ -50,6 +50,7 @@ if (! defined $entry_id) {
 else {
 	my $entry = $po->[$entry_id];
 	ok($entry, 'We found the entry with our msgid');
+
 	my $expected_msgstr = q{"Ian Murdock, fondatore del progetto Debian, fu il suo primo leader dal 1993 al 1996. Dopo aver passato il testimone a Bruce Perens, Ian assunse un ruolo più nascosto tornando a lavorare dietro le quinte della comunità del software libero creando l'azienda Progeny, con lo scopo di commercializzare una distribuzione derivata da Debian. Questa impresa purtroppo dal punto di vista commerciale fu un fallimento e lo sviluppo venne abbandonato. La società dopo essere stata a galla a stento come semplice fornitore di servizi è fallita nell'aprile 2007. Di tutti i vari progetti avviati da Progeny è rimasto solo <emphasis>discover</emphasis> (uno strumento automatico di rilevamento hardware)."};
 	is($entry->msgstr(), $expected_msgstr,
 		'Our entry has the expected translation too');
@@ -61,4 +62,22 @@ else {
 
 	isnt($entry->fuzzy_msgid(), $entry->msgid(),
 		'Previous/fuzzy and current msgid are different');
+
+	# Try to modify the value and see that we can persist it
+	my $new_value;
+	$entry->fuzzy_msgid($new_value);
+	is($entry->fuzzy_msgid(), $new_value, 'fuzzy_msgid() value can be modified');
+
+	ok(Locale::PO->save_file_fromarray("${file}.out", $po), "save again to file");
+	ok -e "${file}.out", "the file now exists";
+
+	my $po_after_save = Locale::PO->load_file_asarray("${file}.out");
+	ok $po_after_save, "loaded ${file}.out file"
+		and unlink "${file}.out";
+
+	my $new_entry = $po_after_save->[$entry_id];
+	ok($new_entry, 'Found the same PO entry in the just saved file');
+
+	is($new_entry->fuzzy_msgid(), $new_value,
+		'New value of fuzzy_msgid() persisted on save');
 }
