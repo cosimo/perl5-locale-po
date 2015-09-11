@@ -278,16 +278,16 @@ sub dump {
         . $self->_fuzzy_normalize_str($self->fuzzy_msgid_plural, $fuzzy_prefix)
         if $self->fuzzy_msgid_plural;
 
-    $dump .= "${obsolete}msgctxt " . $self->_normalize_str($self->msgctxt)
+    $dump .= "${obsolete}msgctxt " . $self->_fuzzy_normalize_str($self->msgctxt, $obsolete)
         if $self->msgctxt;
-    $dump .= "${obsolete}msgid " . $self->_normalize_str($self->msgid);
-    $dump .= "${obsolete}msgid_plural " . $self->_normalize_str($self->msgid_plural)
+    $dump .= "${obsolete}msgid " . $self->_fuzzy_normalize_str($self->msgid, $obsolete);
+    $dump .= "${obsolete}msgid_plural " . $self->_fuzzy_normalize_str($self->msgid_plural, $obsolete)
         if $self->msgid_plural;
 
-    $dump .= "${obsolete}msgstr " . $self->_normalize_str($self->msgstr) if $self->msgstr;
+    $dump .= "${obsolete}msgstr " . $self->_fuzzy_normalize_str($self->msgstr, $obsolete) if $self->msgstr;
 
     if (my $msgstr_n = $self->msgstr_n) {
-        $dump .= "${obsolete}msgstr[$_] " . $self->_normalize_str($$msgstr_n{$_})
+        $dump .= "${obsolete}msgstr[$_] " . $self->_fuzzy_normalize_str($$msgstr_n{$_}, $obsolete)
             for sort { $a <=> $b } keys %$msgstr_n;
     }
 
