@@ -1,0 +1,2 @@
+msgid "Column 1\tColumn 2\tColumn 3\nnext line"
+msgstr "Value 1\tValue 2\tValue 3\nnext line"
